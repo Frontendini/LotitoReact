@@ -3,7 +3,7 @@ export default function Navbar() {
 <nav className="bg-black text-white py-5">
 <ul className="flex justify-center gap-5">
   <li>Home</li>
-  <li>Movies</li>
+  <li>Pokémom</li>
   <li>About us</li>
 </ul>
 </nav>
@@ -11,3 +11,4 @@ export default function Navbar() {
     );
 
 }
+
