@@ -60,7 +60,6 @@ export default function App() {
     <Router>
       <Navbar />
       <Routes>
-        {/* Route per la lista dei Pokémon */}
         <Route
           path="/"
           element={
@@ -113,8 +112,7 @@ export default function App() {
             </div>
           }
         />
-
-        {/* Route per la pagina di dettaglio del Pokémon */}
+               
         <Route path="/pokemon/:id" element={<PokémonDetail />} />
       </Routes>
     </Router>
