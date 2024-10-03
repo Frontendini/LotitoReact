@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import PokémonCard from "./components/PokémonCard";
+import PokémonDetail from "./components/PokémonDetail";
 
 export default function App() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -55,51 +57,66 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <Router>
       <Navbar />
-      <div className="container mx-auto">
-        <h1 className="text-4xl font-bold text-center mt-8">Pokédex</h1>
+      <Routes>
+        {/* Route per la lista dei Pokémon */}
+        <Route
+          path="/"
+          element={
+            <div className="container mx-auto">
+              <h1 className="text-4xl font-bold text-center mt-8">Pokédex</h1>
 
-        {/* Input per filtrare i Pokémon */}
-        <input
-          type="text"
-          placeholder="Filtra Pokémon"
-          onChange={handleFilter}
-          className="block mx-auto mt-4 mb-8 p-2 border border-gray-300 rounded shadow-sm"
+              {/* Input per filtrare i Pokémon */}
+              <input
+                type="text"
+                placeholder="Filtra Pokémon"
+                onChange={handleFilter}
+                className="block mx-auto mt-4 mb-8 p-2 border border-gray-300 rounded shadow-sm"
+              />
+
+              <div className="pokemon-list">
+                <h2 className="text-2xl font-semibold mb-4">Elenco Pokémon</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {filteredPokemon.map((pokemon) => (
+                    <PokémonCard
+                      key={pokemon.name}
+                      pokemon={pokemon}
+                      isFavorite={favorites.some(
+                        (fav) => fav.name === pokemon.name
+                      )}
+                      toggleFavorite={toggleFavorite}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="favorites-list mt-12">
+                <h2 className="text-2xl font-semibold mb-4">Preferiti</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {favorites.length > 0 ? (
+                    favorites.map((pokemon) => (
+                      <PokémonCard
+                        key={pokemon.name}
+                        pokemon={pokemon}
+                        isFavorite={true}
+                        toggleFavorite={toggleFavorite}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">
+                      Non ci sono preferiti.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          }
         />
 
-        <div className="pokemon-list">
-          <h2 className="text-2xl font-semibold mb-4">Elenco Pokémon</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredPokemon.map((pokemon) => (
-              <PokémonCard
-                key={pokemon.name}
-                pokemon={pokemon}
-                isFavorite={favorites.some((fav) => fav.name === pokemon.name)}
-                toggleFavorite={toggleFavorite}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="favorites-list mt-12">
-          <h2 className="text-2xl font-semibold mb-4">Preferiti</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {favorites.length > 0 ? (
-              favorites.map((pokemon) => (
-                <PokemonCard
-                  key={pokemon.name}
-                  pokemon={pokemon}
-                  isFavorite={true}
-                  toggleFavorite={toggleFavorite}
-                />
-              ))
-            ) : (
-              <p className="text-center text-gray-500">Non ci sono preferiti.</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+        {/* Route per la pagina di dettaglio del Pokémon */}
+        <Route path="/pokemon/:id" element={<PokémonDetail />} />
+      </Routes>
+    </Router>
   );
 }
