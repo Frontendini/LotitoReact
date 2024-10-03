@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import PokémonCard from "./components/PokémonCard";
 
 export default function App() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -56,50 +57,45 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <div className="container">
-        <h1>Pokédex</h1>
+      <div className="container mx-auto">
+        <h1 className="text-4xl font-bold text-center mt-8">Pokédex</h1>
 
         {/* Input per filtrare i Pokémon */}
         <input
           type="text"
           placeholder="Filtra Pokémon"
           onChange={handleFilter}
-          className="filter-input"
-
+          className="block mx-auto mt-4 mb-8 p-2 border border-gray-300 rounded shadow-sm"
         />
 
         <div className="pokemon-list">
-          <h2>Elenco pokémon </h2>
-          <div className="card-container">
+          <h2 className="text-2xl font-semibold mb-4">Elenco Pokémon</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredPokemon.map((pokemon) => (
-              <div key={pokemon.name} className="pokemon-card">
-                <img src={pokemon.image} alt={pokemon.name} />
-                <h3>{pokemon.name}</h3>
-                <button onClick={() => toggleFavorite(pokemon)}>
-                  {favorites.some((fav) => fav.name === pokemon.name)
-                    ? "Rimuovi dai preferiti"
-                    : "Aggiungi ai preferiti"}
-                </button>
-              </div>
+              <PokémonCard
+                key={pokemon.name}
+                pokemon={pokemon}
+                isFavorite={favorites.some((fav) => fav.name === pokemon.name)}
+                toggleFavorite={toggleFavorite}
+              />
             ))}
           </div>
         </div>
 
-        <div className="favorites-list">
-          <h2>Preferiti</h2>
-          <div className="card-container">
+        <div className="favorites-list mt-12">
+          <h2 className="text-2xl font-semibold mb-4">Preferiti</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {favorites.length > 0 ? (
               favorites.map((pokemon) => (
-                <div key={pokemon.name} className="pokemon-card">
-                  <img src={pokemon.image} alt={pokemon.name} />
-                  <h3>{pokemon.name}</h3>
-                  <button onClick={() => toggleFavorite(pokemon)}>
-                    Rimuovi dai preferiti
-                  </button>
-                </div>
+                <PokemonCard
+                  key={pokemon.name}
+                  pokemon={pokemon}
+                  isFavorite={true}
+                  toggleFavorite={toggleFavorite}
+                />
               ))
             ) : (
-              <p>Non ci sono preferiti.</p>
+              <p className="text-center text-gray-500">Non ci sono preferiti.</p>
             )}
           </div>
         </div>
