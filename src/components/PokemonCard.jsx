@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 
 export default function PokemonCard({ pokemon, isFavorite, toggleFavorite }) {
   return (
+  
     <div className="pokemon-card p-4 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
       <Link to={`/pokemon/${pokemon.id}`}>
         <img
@@ -23,5 +25,6 @@ export default function PokemonCard({ pokemon, isFavorite, toggleFavorite }) {
         {isFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
       </button>
     </div>
+   
   );
 }
